@@ -20,8 +20,9 @@ Shift_JIS や UTF-8 などのエンコーディングにも対応し、列ヘッ
   ※本スクリプトでは ImportExcel モジュールに同梱された DLL を使用します。
 ```bash
 Save-Module -Name ImportExcel -Path .\Modules
-
+```
 ## スクリプトの構成
 
 ```bash
-Convert-CsvToXlsx.ps1
+.\Convert-CsvToXlsx.ps1 "C:\download\address\01000-22.0a\01_2023-test-nodq.csv" -MaxRows 100000 -StartRow 1 -QuotedFields $false  -debug
+```
