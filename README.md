@@ -18,11 +18,15 @@ Shift_JIS や UTF-8 などのエンコーディングにも対応し、列ヘッ
 - PowerShell 7.x
 - [EPPlus.dll](https://www.nuget.org/packages/EPPlus)  
   ※本スクリプトでは ImportExcel モジュールに同梱された DLL を使用します。
+### ダウンロード方法
 ```bash
 Save-Module -Name ImportExcel -Path .\Modules
 ```
-## スクリプトの構成
+### スクリプトの構成
 
 ```bash
+# 実行例
 .\Convert-CsvToXlsx.ps1 "C:\download\address\01000-22.0a\01_2023-test-nodq.csv" -MaxRows 100000 -StartRow 1 -QuotedFields $false  -debug
+.\Convert-CsvToXlsx.ps1 "C:\download\address\01000-22.0a\01_2023-test.csv" -MaxRows 0 -StartRow 1 -QuotedFields $true  -debug
+.\Convert-CsvToXlsx.ps1 "C:\download\address\01000-22.0a\01_2023-utf8.csv" -MaxRows 20 -StartRow 1 -QuotedFields $true -Encoding utf-8 -debug
 ```
