@@ -3,6 +3,7 @@
 PowerShell スクリプト `Convert-CsvToXlsx.ps1` は、CSV 形式または区切り付きテキストファイルを Excel（`.xlsx`）形式に変換するためのツールです。  
 Shift_JIS や UTF-8 などのエンコーディングにも対応し、列ヘッダーは自動で通番を付与します。
 
+
 ## 特徴
 
 - 入力ファイルの拡張子は自動的に `.xlsx` に変換
@@ -17,6 +18,8 @@ Shift_JIS や UTF-8 などのエンコーディングにも対応し、列ヘッ
 - PowerShell 7.x
 - [EPPlus.dll](https://www.nuget.org/packages/EPPlus)  
   ※本スクリプトでは ImportExcel モジュールに同梱された DLL を使用します。
+```bash
+Save-Module -Name ImportExcel -Path .\Modules
 
 ## スクリプトの構成
 

@@ -7,7 +7,9 @@ param(
 )
 
 # EPPlus.dll の読み込み（ImportExcelモジュールから直接）
-$epplusPath = "C:\powershell-pj\pj1\modules\ImportExcel\7.8.10\EPPlus.dll"
+#$epplusPath = "C:\powershell-pj\pj1\modules\ImportExcel\7.8.10\EPPlus.dll"
+$epplusPath = ".\Modules\ImportExcel\7.8.10\EPPlus.dll"
+
 Add-Type -Path $epplusPath
 [Reflection.Assembly]::LoadFrom($epplusPath) | Out-Null
 
@@ -51,7 +53,7 @@ while (-not $reader.EndOfStream -and $linesToProcess.Count -lt $maxToRead + 1) {
     $linesToProcess.Add($reader.ReadLine())
 
     if ($linesToProcess.Count % 50000 -eq 0) {
-        Write-Host "読み込み中: $($linesToProcess.Count) 行..."
+        Write-Debug "読み込み中: $($linesToProcess.Count) 行..."
     }
 }
 $reader.Close()
@@ -81,7 +83,7 @@ foreach ($line in $linesToProcess) {
     }
 
     $rowIndex++
-    if ($rowIndex % 30000 -eq 0) {
+    if ($rowIndex % 50000 -eq 0) {
         Write-Debug "書き出し中: $rowIndex 行目..."
     }
 }
