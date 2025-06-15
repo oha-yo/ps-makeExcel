@@ -27,7 +27,7 @@ Save-Module -Name ImportExcel -Path .\Modules
 ```bash
 # 実行例
 .\Convert-CsvToXlsx.ps1 ".\01_2023-test-nodq.csv" -MaxRows 200 -StartRow 2 -debug
-.\Convert-CsvToXlsx.ps1 ".\01_2023-test.csv" -StartRow 1 -debug
-.\Convert-CsvToXlsx.ps1 ".\01_2023-utf8.csv" -MaxRows 5 -StartRow 1 -Encoding utf-8 -IncludeHeaders $true -debug
-.\Convert-CsvToXlsx.ps1 ".\01_2023-test-nodq-tab.csv" -MaxRows 3 -StartRow 2 -Separator "\t"  -debug
+.\Convert-CsvToXlsx.ps1 ".\01_2023-test.csv" -MaxRows 20 -StartRow 1 -AddColumnNumbers $true -debug
+.\Convert-CsvToXlsx.ps1 ".\01_2023-utf8.csv" -MaxRows 5 -StartRow 2 -Encoding utf-8 -debug
+.\Convert-CsvToXlsx.ps1 ".\01_2023-test-nodq-tab.csv" -MaxRows 3 -StartRow 2 -Separator "\t" -debug
 ```
