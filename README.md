@@ -10,7 +10,7 @@ Shift_JIS や UTF-8 などのエンコーディングにも対応し、列ヘッ
 - Shift_JIS など任意の文字コードで読み込み可能
 - 開始行（ヘッダー除去）や最大読み込み行数を指定可能
 - 引用付きCSV (`"aaa","bbb"` 形式) のパースに対応
-- EPPlus を使用して `.xlsx` を高速・安定に生成
+- EPPlus を使用して `.xlsx` を生成(ImportExcelを使うより圧倒的に高速を実現)
 - 出力先ファイルが既に開かれている場合はエラーメッセージを表示
 
 ## 必須要件
@@ -26,7 +26,8 @@ Save-Module -Name ImportExcel -Path .\Modules
 
 ```bash
 # 実行例
-.\Convert-CsvToXlsx.ps1 "C:\download\address\01000-22.0a\01_2023-test-nodq.csv" -MaxRows 100000 -StartRow 1 -QuotedFields $false  -debug
-.\Convert-CsvToXlsx.ps1 "C:\download\address\01000-22.0a\01_2023-test.csv" -MaxRows 0 -StartRow 1 -QuotedFields $true  -debug
-.\Convert-CsvToXlsx.ps1 "C:\download\address\01000-22.0a\01_2023-utf8.csv" -MaxRows 20 -StartRow 1 -QuotedFields $true -Encoding utf-8 -debug
+.\Convert-CsvToXlsx.ps1 ".\01_2023-test-nodq.csv" -MaxRows 200 -StartRow 2 -debug
+.\Convert-CsvToXlsx.ps1 ".\01_2023-test.csv" -StartRow 1 -debug
+.\Convert-CsvToXlsx.ps1 ".\01_2023-utf8.csv" -MaxRows 5 -StartRow 1 -Encoding utf-8 -IncludeHeaders $true -debug
+.\Convert-CsvToXlsx.ps1 ".\01_2023-test-nodq-tab.csv" -MaxRows 3 -StartRow 2 -Separator "\t"  -debug
 ```
