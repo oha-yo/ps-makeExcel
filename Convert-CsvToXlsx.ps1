@@ -4,7 +4,8 @@ param(
     [Parameter()][int]$StartRow = 2,
     [Parameter()][int]$MaxRows = 0,
     [Parameter()][string]$Separator = ",",
-    [Parameter()][bool]$AddColumnNumbers = $false
+    [Parameter()][bool]$AddColumnNumbers = $false,
+    [Parameter()][int[]]$TargetColumns = @()  # 空なら全カラム
 )
 # CSVを分割し配列にして返却する関数
 function SplitCsvLine {
@@ -25,6 +26,8 @@ function SplitCsvLine {
     }
     return $csvline
 }
+
+Write-Debug "TargetColumns: $($TargetColumns -join ',')"
 
 # EPPlus.dll の読み込み（ImportExcelモジュールから直接）
 $epplusPath = ".\Modules\ImportExcel\7.8.10\EPPlus.dll"
@@ -56,9 +59,17 @@ while (-not $reader.EndOfStream -and $currentLineNumber -lt ($StartRow - 1)) {
 $firstDataLine = $reader.ReadLine()
 $currentLineNumber++
 
-# カラム数をカウント
-$columnCount = (SplitCsvLine -line $firstDataLine -Separator $Separator ).Count
+$allColumns = SplitCsvLine -line $firstDataLine -Separator $Separator
+# ターゲット列の番号リスト（0始まりで調整）
+$targetIndexes = if ($TargetColumns.Count -gt 0) {
+    $TargetColumns | ForEach-Object { $_ - 1 }
+} else {
+    0..($allColumns.Count - 1)
+}
 
+# カラム数をカウント
+#$columnCount = (SplitCsvLine -line $firstDataLine -Separator $Separator ).Count
+$columnCount = $targetIndexes.Count
 # 通番でヘッダー作成
 $headers = @(1..$columnCount | ForEach-Object { "$_" })
 
@@ -69,7 +80,6 @@ $linesToProcess.Add($firstDataLine)
 $maxToRead = if ($MaxRows -gt 0) { $MaxRows - 1 } else { [int]::MaxValue }
 while (-not $reader.EndOfStream -and $linesToProcess.Count -lt $maxToRead + 1) {
     $linesToProcess.Add($reader.ReadLine())
-
     if ($linesToProcess.Count % 50000 -eq 0) {
         Write-Debug "読み込み中: $($linesToProcess.Count) 行..."
     }
@@ -92,11 +102,15 @@ if ($AddColumnNumbers) {
 $rowIndex = if ($AddColumnNumbers) { 2 } else { 1 }
 
 foreach ($line in $linesToProcess) {
+    Write-Debug "行 $rowIndex : $($columns -join '|')"
+    Write-Debug "抽出列 $($targetIndexes -join ',')"
+
     $columns = SplitCsvLine -line $line -Separator $Separator
     #Write-Debug "columns: $($columns) "
-    for ($colIndex = 0; $colIndex -lt $headers.Length; $colIndex++) {
-        $value = if ($colIndex -lt $columns.Count) { $columns[$colIndex] } else { $null }
-        $sheet.Cells.Item($rowIndex, $colIndex + 1).Value = $value
+    for ($i = 0; $i -lt $targetIndexes.Count; $i++) {
+        $srcIndex = $targetIndexes[$i]
+        $value = if ($srcIndex -lt $columns.Count) { $columns[$srcIndex] } else { $null }
+        $sheet.Cells.Item($rowIndex, $i + 1).Value = $value
     }
 
     $rowIndex++
@@ -104,6 +118,7 @@ foreach ($line in $linesToProcess) {
         Write-Debug "書き出し中: $rowIndex 行目..."
     }
 }
+
 Write-Debug "書き出し完了: $($rowIndex -1)行"
 # オートフィット・保存
 Write-Debug "ファイル保存中..."
