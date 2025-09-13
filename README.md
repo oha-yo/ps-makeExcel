@@ -20,6 +20,7 @@ Shift_JIS や UTF-8 などのエンコーディングにも対応し、列ヘッ
   ※本スクリプトでは ImportExcel モジュールに同梱された DLL を使用します。
 ### ダウンロード方法
 ```bash
+mkdir .\Modules
 Save-Module -Name ImportExcel -Path .\Modules
 ```
 ### スクリプトの構成
